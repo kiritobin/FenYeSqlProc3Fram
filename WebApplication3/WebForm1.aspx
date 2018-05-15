@@ -37,7 +37,6 @@
             <asp:Button ID="btnLast" runat="server" OnClick="btnLast_Click" Text="最后一页" />
             <asp:TextBox ID="TextBox1" runat="server" Width="83px"></asp:TextBox>
             <asp:Button ID="btnGO" runat="server" OnClientClick="integer()" OnClick="btnGO_Click" Text="跳转" />
-            <span id="lbArea" runat='server'></span>
         </div>
         <p>
             <asp:Label ID="Label1" runat="server"></asp:Label>
