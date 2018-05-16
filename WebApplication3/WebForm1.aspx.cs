@@ -13,18 +13,19 @@ namespace WebApplication3
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
-        UserInfoBAL userBll = new UserInfoBAL();
+         UserInfoBLL userBll = new UserInfoBLL();
         UserInfo user = new UserInfo();
-        static int i = 1;
+        int count = 1;
         private void loadData()
         {
+            count = Convert.ToInt32(ViewState["count"]);
             user.tableName = "stuInfo";
             user.Column = "stuNO";
             user.ColType = 0;
             user.Order = 0;
             user.Columnlist = "*";
             user.PageSize = Convert.ToInt32(DropDownList1.SelectedItem.Text);
-            user.PageNum = i;
+            user.PageNum = count;
             user.Where = "";
             GridView1.DataSource = userBll.loadData(user);
             GridView1.DataBind();
@@ -33,62 +34,62 @@ namespace WebApplication3
         {
             if (!IsPostBack)
             {
-                i = 1;
+                ViewState["count"] = 1;
                 loadData();
-                Label1.Text = "当前页：" + i;
+                Label1.Text = Label1.Text = "当前页：" + count;
+                Label2.Text = "总页数：" + UserInfoDAL.count;
             }
-            Label2.Text = "总页数：" + UserInfoDAL.count;
         }
 
         protected void btnFirst_Click(object sender, EventArgs e)
         {
-            i = 1;
+            ViewState["count"] = 1;
             loadData();
-            Label1.Text = "当前页：" + 1;
+            Label1.Text = Label1.Text = "当前页：" + count;
+            Label2.Text = "总页数：" + UserInfoDAL.count;
         }
-        
+
         protected void btnPre_Click(object sender, EventArgs e)
         {
-            if (i > 1)
+            if (Convert.ToInt32(ViewState["count"]) > 1)
             {
-                i--;
+                ViewState["count"] = Convert.ToInt32(ViewState["count"]) - 1;
                 loadData();
-                Label1.Text = "当前页：" + i;
+                Label1.Text = "当前页：" + count;
             }
         }
 
         protected void btnNext_Click(object sender, EventArgs e)
         {
-            if (i < userBll.count)
+            if (Convert.ToInt32(ViewState["count"]) < userBll.count)
             {
-                i++;
-                i++;
+                ViewState["count"] = Convert.ToInt32(ViewState["count"]) + 1;
                 loadData();
-                Label1.Text = "当前页：" + i;
+                Label1.Text = "当前页：" + count;
             }
         }
 
         protected void btnLast_Click(object sender, EventArgs e)
         {
-            i = userBll.count;
+            ViewState["count"] = userBll.count;
             loadData();
-            Label1.Text = "当前页：" + i;
+            Label1.Text = "当前页：" + count;
         }
 
         protected void btnGO_Click(object sender, EventArgs e)
         {
             try
             {
-                i = Convert.ToInt32(TextBox1.Text);
+                ViewState["count"] = Convert.ToInt32(TextBox1.Text);
             }
             catch
             {
                 return;
             }
-            if (i <= userBll.count)
+            if (Convert.ToInt32(ViewState["count"]) <= userBll.count)
             {
                 loadData();
-                Label1.Text = "当前页：" + i;
+                Label1.Text = "当前页：" + count;
             }
             else
             {
@@ -98,9 +99,9 @@ namespace WebApplication3
 
         protected void btnOK_Click(object sender, EventArgs e)
         {
-            i = 1;
+            ViewState["count"] = 1;
             loadData();
-            Label1.Text = "当前页：" + i;
+            Label1.Text = "当前页：" + count;
             Label2.Text = "总页数：" + UserInfoDAL.count;
         }
     }
