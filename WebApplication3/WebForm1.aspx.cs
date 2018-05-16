@@ -16,27 +16,34 @@ namespace WebApplication3
         UserInfoBAL userBll = new UserInfoBAL();
         UserInfo user = new UserInfo();
         static int i = 1;
+        private void loadData()
+        {
+            user.tableName = "stuInfo";
+            user.Column = "stuNO";
+            user.ColType = 0;
+            user.Order = 0;
+            user.Columnlist = "*";
+            user.PageSize = Convert.ToInt32(DropDownList1.SelectedItem.Text);
+            user.PageNum = i;
+            user.Where = "";
+            GridView1.DataSource = userBll.loadData(user);
+            GridView1.DataBind();
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                user.Order = 0;
-                user.PageSize = Convert.ToInt32(DropDownList1.SelectedItem.Text);
-                user.PageNum = 1;
-                GridView1.DataSource = userBll.loadData(user);
-                GridView1.DataBind();
-                Label1.Text = "当前页："+i;
+                i = 1;
+                loadData();
+                Label1.Text = "当前页：" + i;
             }
             Label2.Text = "总页数：" + UserInfoDAL.count;
         }
 
         protected void btnFirst_Click(object sender, EventArgs e)
         {
-            user.Order = 0;
-            user.PageSize = Convert.ToInt32(DropDownList1.SelectedItem.Text);
-            user.PageNum = 1;
-            GridView1.DataSource = userBll.loadData(user);
-            GridView1.DataBind();
+            i = 1;
+            loadData();
             Label1.Text = "当前页：" + 1;
         }
         
@@ -45,11 +52,7 @@ namespace WebApplication3
             if (i > 1)
             {
                 i--;
-                user.Order = 0;
-                user.PageSize = Convert.ToInt32(DropDownList1.SelectedItem.Text);
-                user.PageNum = i;
-                GridView1.DataSource = userBll.loadData(user);
-                GridView1.DataBind();
+                loadData();
                 Label1.Text = "当前页：" + i;
             }
         }
@@ -59,11 +62,8 @@ namespace WebApplication3
             if (i < userBll.count)
             {
                 i++;
-                user.Order = 0;
-                user.PageSize = Convert.ToInt32(DropDownList1.SelectedItem.Text);
-                user.PageNum = i;
-                GridView1.DataSource = userBll.loadData(user);
-                GridView1.DataBind();
+                i++;
+                loadData();
                 Label1.Text = "当前页：" + i;
             }
         }
@@ -71,11 +71,7 @@ namespace WebApplication3
         protected void btnLast_Click(object sender, EventArgs e)
         {
             i = userBll.count;
-            user.Order = 0;
-            user.PageSize = Convert.ToInt32(DropDownList1.SelectedItem.Text);
-            user.PageNum = i;
-            GridView1.DataSource = userBll.loadData(user);
-            GridView1.DataBind();
+            loadData();
             Label1.Text = "当前页：" + i;
         }
 
@@ -91,11 +87,7 @@ namespace WebApplication3
             }
             if (i <= userBll.count)
             {
-                user.Order = 0;
-                user.PageSize = Convert.ToInt32(DropDownList1.SelectedItem.Text);
-                user.PageNum = i;
-                GridView1.DataSource = userBll.loadData(user);
-                GridView1.DataBind();
+                loadData();
                 Label1.Text = "当前页：" + i;
             }
             else
@@ -107,11 +99,7 @@ namespace WebApplication3
         protected void btnOK_Click(object sender, EventArgs e)
         {
             i = 1;
-            user.Order = 0;
-            user.PageSize = Convert.ToInt32(DropDownList1.SelectedItem.Text);
-            user.PageNum = i;
-            GridView1.DataSource = userBll.loadData(user);
-            GridView1.DataBind();
+            loadData();
             Label1.Text = "当前页：" + i;
             Label2.Text = "总页数：" + UserInfoDAL.count;
         }
